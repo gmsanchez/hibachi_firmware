@@ -1,0 +1,13 @@
+Language: Cpp
+BasedOnStyle: Google
+IndentWidth: 4
+ColumnLimit: 80
+SortIncludes: false
+
+AlignConsecutiveMacros:
+  Enabled: true
+  AcrossEmptyLines: true
+  AcrossComments: false
+
+IndentPPDirectives: BeforeHash
+PPIndentWidth: 2
