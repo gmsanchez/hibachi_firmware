@@ -23,7 +23,7 @@ PWM_map defaultPWM_motor_map = PWM_MOTOR_MAP;
 PWM_map defaultPWM_PID_map = PWM_PID_MAP;
 
 DualG2 front_left_motor(FRONT_LEFT_MOTOR_PWM, FRONT_LEFT_MOTOR_DIR,
-                        FRONT_LEFT_MOTOR_SLEEP, defaultPWM_motor_map);
+                        FRONT_LEFT_MOTOR_SLEEP, defaultPWM_motor_map, true);
 Encoder front_left_encoder(rad_per_tick);
 SpeedEstimator front_left_speed_estimator(PID_UPDATE_mS);
 PID_SpeedController front_left_speed_control(&front_left_speed_estimator,
@@ -31,7 +31,7 @@ PID_SpeedController front_left_speed_control(&front_left_speed_estimator,
                                              defaultPWM_PID_map);
 
 DualG2 front_right_motor(FRONT_RIGHT_MOTOR_PWM, FRONT_RIGHT_MOTOR_DIR,
-                         FRONT_RIGHT_MOTOR_SLEEP, defaultPWM_motor_map, true);
+                         FRONT_RIGHT_MOTOR_SLEEP, defaultPWM_motor_map, false);
 Encoder front_right_encoder(rad_per_tick);
 SpeedEstimator front_right_speed_estimator(PID_UPDATE_mS);
 PID_SpeedController front_right_speed_control(&front_right_speed_estimator,
@@ -39,7 +39,7 @@ PID_SpeedController front_right_speed_control(&front_right_speed_estimator,
                                               defaultPWM_PID_map);
 
 DualG2 rear_left_motor(REAR_LEFT_MOTOR_PWM, REAR_LEFT_MOTOR_DIR,
-                       REAR_LEFT_MOTOR_SLEEP, defaultPWM_motor_map);
+                       REAR_LEFT_MOTOR_SLEEP, defaultPWM_motor_map, true);
 Encoder rear_left_encoder(rad_per_tick);
 SpeedEstimator rear_left_speed_estimator(PID_UPDATE_mS);
 PID_SpeedController rear_left_speed_control(&rear_left_speed_estimator,
@@ -47,7 +47,7 @@ PID_SpeedController rear_left_speed_control(&rear_left_speed_estimator,
                                             defaultPWM_PID_map);
 
 DualG2 rear_right_motor(REAR_RIGHT_MOTOR_PWM, REAR_RIGHT_MOTOR_DIR,
-                        REAR_RIGHT_MOTOR_SLEEP, defaultPWM_motor_map, true);
+                        REAR_RIGHT_MOTOR_SLEEP, defaultPWM_motor_map, false);
 Encoder rear_right_encoder(rad_per_tick);
 SpeedEstimator rear_right_speed_estimator(PID_UPDATE_mS);
 PID_SpeedController rear_right_speed_control(&rear_right_speed_estimator,
@@ -187,6 +187,7 @@ void setPWMOutput(const uint8_t* frameBuffer, uint16_t frameLength) {
         PWM_map pwm_map_test = PWM_map{
             .min = 0, .max = 254, .dbMin = 0, .dbMax = 254, .center = 0};
         PWM pwm_(pwm_map_test);
+
         for (int idx = 0; idx < 4; ++idx) {
             uint8_t _cmd = (int8_t)frameBuffer[idx] & 0xFF;
             if (_cmd == 0) {

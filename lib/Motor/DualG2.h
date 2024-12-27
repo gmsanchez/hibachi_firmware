@@ -48,12 +48,13 @@ class DualG2 : public Motor {
      * invertirse
      */
     DualG2(const int enable_pin, const int dir_pin, const int sleep_pin,
-           const PWM_map pwm_map, bool fliped = false)
+           const PWM_map pwm_map, bool fliped = false, bool negated_logic = false)
         : Motor(pwm_map),
           _enable_pin(enable_pin),
           _dir_pin(dir_pin),
           _sleep_pin(sleep_pin),
-          _fliped(fliped){};
+          _fliped(fliped),
+          _negated_logic(negated_logic){};
 
     /**
      * Inicializa los GPIO de control del puente-H como salidas y establece
@@ -66,7 +67,7 @@ class DualG2 : public Motor {
         pinMode(_dir_pin, OUTPUT);
         pinMode(_sleep_pin, OUTPUT);
 
-        digitalWrite(_sleep_pin, LOW);
+        digitalWrite(_sleep_pin, _negated_logic ? HIGH : LOW);
         _sleeping = true;
 
         // The drivers require a maximum of 1ms to elapse when brought out of
@@ -79,7 +80,7 @@ class DualG2 : public Motor {
      */
     void setForward(void) {
         digitalWrite(_dir_pin, _fliped ? HIGH : LOW);
-        digitalWrite(_sleep_pin, HIGH);
+        digitalWrite(_sleep_pin, _negated_logic ? LOW : HIGH);
         if (_sleeping) {
             delay(5);
             _sleeping = false;
@@ -91,7 +92,7 @@ class DualG2 : public Motor {
      */
     void setBackward(void) {
         digitalWrite(_dir_pin, _fliped ? LOW : HIGH);
-        digitalWrite(_sleep_pin, HIGH);
+        digitalWrite(_sleep_pin, _negated_logic ? LOW : HIGH);
         if (_sleeping) {
             delay(5);
             _sleeping = false;
@@ -102,7 +103,7 @@ class DualG2 : public Motor {
      * Liberar
      */
     void setFree(void) {
-        digitalWrite(_sleep_pin, LOW);
+        digitalWrite(_sleep_pin, _negated_logic ? HIGH : LOW);
         _sleeping = true;
     }
 
@@ -120,6 +121,7 @@ class DualG2 : public Motor {
    private:
     int _enable_pin, _dir_pin, _sleep_pin;  // GPIO de control del puente-H
     bool _fliped;                           // Flip direction
+    bool _negated_logic;                     // Inverse enable pin logic
     bool _sleeping;
 };
 
