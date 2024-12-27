@@ -163,11 +163,11 @@ void setWheelControl(const uint8_t* frameBuffer, uint16_t frameLength) {
         int16_t rear_right_cmd =
             ((int16_t)frameBuffer[7] << 8) | frameBuffer[6];
 
-        // From INT to FLOAT (3 decimals)
-        float front_left_speed_cmd = (float)front_left_cmd / 1000.0f;
-        float front_right_speed_cmd = (float)front_right_cmd / 1000.0f;
-        float rear_left_speed_cmd = (float)rear_left_cmd / 1000.0f;
-        float rear_right_speed_cmd = (float)(rear_right_cmd) / 1000.0f;
+        // From INT to FLOAT (2 decimals)
+        float front_left_speed_cmd = (float)front_left_cmd / 100.0f;
+        float front_right_speed_cmd = (float)front_right_cmd / 100.0f;
+        float rear_left_speed_cmd = (float)rear_left_cmd / 100.0f;
+        float rear_right_speed_cmd = (float)(rear_right_cmd) / 100.0f;
 
         if (front_left_speed_cmd == 0.0f && front_right_speed_cmd == 0.0f &&
             rear_left_speed_cmd == 0.0f && rear_right_speed_cmd == 0.0f) {
@@ -241,14 +241,15 @@ void getWheelEncoder(const uint8_t* frameBuffer, uint16_t frameLength) {
 
     /** ---------- Position ---------- */
     getWheelEncoderResponse[0] = 0x04;
+    // From INT to FLOAT (2 decimals)
     int16_t front_left_wheel_data =
-        (int16_t)(front_left_encoder.getPosition() * 1000.0);
+        (int16_t)(front_left_encoder.getPosition() * 100.0);
     int16_t front_right_wheel_data =
-        (int16_t)(front_right_encoder.getPosition() * 1000.0);
+        (int16_t)(front_right_encoder.getPosition() * 100.0);
     int16_t rear_left_wheel_data =
-        (int16_t)(rear_left_encoder.getPosition() * 1000.0);
+        (int16_t)(rear_left_encoder.getPosition() * 100.0);
     int16_t rear_right_wheel_data =
-        (int16_t)(rear_right_encoder.getPosition() * 1000.0);
+        (int16_t)(rear_right_encoder.getPosition() * 100.0);
 
     getWheelEncoderResponse[4] = (uint8_t)((front_left_wheel_data) & 0xFF);
     getWheelEncoderResponse[5] = (uint8_t)((front_left_wheel_data >> 8) & 0xFF);
@@ -265,14 +266,15 @@ void getWheelEncoder(const uint8_t* frameBuffer, uint16_t frameLength) {
 
     /** ---------- Speed ---------- */
     getWheelEncoderResponse[0] = 0x06;
+    // From INT to FLOAT (2 decimals)
     front_left_wheel_data =
-        (int16_t)(front_left_speed_control.getSpeed() * 1000.0);
+        (int16_t)(front_left_speed_control.getSpeed() * 100.0);
     front_right_wheel_data =
-        (int16_t)(front_right_speed_control.getSpeed() * 1000.0);
+        (int16_t)(front_right_speed_control.getSpeed() * 100.0);
     rear_left_wheel_data =
-        (int16_t)(rear_left_speed_control.getSpeed() * 1000.0);
+        (int16_t)(rear_left_speed_control.getSpeed() * 100.0);
     rear_right_wheel_data =
-        (int16_t)(rear_right_speed_control.getSpeed() * 1000.0);
+        (int16_t)(rear_right_speed_control.getSpeed() * 100.0);
 
     getWheelEncoderResponse[4] = (uint8_t)((front_left_wheel_data) & 0xFF);
     getWheelEncoderResponse[5] = (uint8_t)((front_left_wheel_data >> 8) & 0xFF);
