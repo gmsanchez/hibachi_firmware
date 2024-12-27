@@ -24,13 +24,19 @@
 #include <SerialHDLC.h>
 
 //-------------------------------------------------------------------
+// Wiring pinout and specific board configs
+//-------------------------------------------------------------------
+
+#include "blackpill_pinout.h"
+
+//-------------------------------------------------------------------
 // Mechanic constants
 //-------------------------------------------------------------------
 
 const double m_pi = 3.14159265358979323846;
 
 // Encoder
-const int ticks_per_rev = 4480 / 4;
+const int ticks_per_rev = TICKS_PER_REV;
 const double rad_per_tick = (2 * m_pi) / double(ticks_per_rev);
 
 // Gain values for PID motor control initialization
@@ -64,10 +70,6 @@ static bool timeout_flag = false;
      .dbMin = 0,                      \
      .dbMax = PWM_MOTOR_MAP_MAXVALUE, \
      .center = 0}
-//-------------------------------------------------------------------
-// Wiring pinout
-//-------------------------------------------------------------------
-#include "bluepill_pinout.h"
 
 //-------------------------------------------------------------------
 // Encoder and motors globals

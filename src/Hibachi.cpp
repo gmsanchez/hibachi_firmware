@@ -23,7 +23,7 @@ PWM_map defaultPWM_motor_map = PWM_MOTOR_MAP;
 PWM_map defaultPWM_PID_map = PWM_PID_MAP;
 
 DualG2 front_left_motor(FRONT_LEFT_MOTOR_PWM, FRONT_LEFT_MOTOR_DIR,
-                        FRONT_LEFT_MOTOR_SLEEP, defaultPWM_motor_map, true);
+                        FRONT_LEFT_MOTOR_SLEEP, defaultPWM_motor_map, true, true);
 Encoder front_left_encoder(rad_per_tick);
 SpeedEstimator front_left_speed_estimator(PID_UPDATE_mS);
 PID_SpeedController front_left_speed_control(&front_left_speed_estimator,
@@ -31,7 +31,7 @@ PID_SpeedController front_left_speed_control(&front_left_speed_estimator,
                                              defaultPWM_PID_map);
 
 DualG2 front_right_motor(FRONT_RIGHT_MOTOR_PWM, FRONT_RIGHT_MOTOR_DIR,
-                         FRONT_RIGHT_MOTOR_SLEEP, defaultPWM_motor_map, false);
+                         FRONT_RIGHT_MOTOR_SLEEP, defaultPWM_motor_map, false, true);
 Encoder front_right_encoder(rad_per_tick);
 SpeedEstimator front_right_speed_estimator(PID_UPDATE_mS);
 PID_SpeedController front_right_speed_control(&front_right_speed_estimator,
@@ -39,7 +39,7 @@ PID_SpeedController front_right_speed_control(&front_right_speed_estimator,
                                               defaultPWM_PID_map);
 
 DualG2 rear_left_motor(REAR_LEFT_MOTOR_PWM, REAR_LEFT_MOTOR_DIR,
-                       REAR_LEFT_MOTOR_SLEEP, defaultPWM_motor_map, true);
+                       REAR_LEFT_MOTOR_SLEEP, defaultPWM_motor_map, true, true);
 Encoder rear_left_encoder(rad_per_tick);
 SpeedEstimator rear_left_speed_estimator(PID_UPDATE_mS);
 PID_SpeedController rear_left_speed_control(&rear_left_speed_estimator,
@@ -47,7 +47,7 @@ PID_SpeedController rear_left_speed_control(&rear_left_speed_estimator,
                                             defaultPWM_PID_map);
 
 DualG2 rear_right_motor(REAR_RIGHT_MOTOR_PWM, REAR_RIGHT_MOTOR_DIR,
-                        REAR_RIGHT_MOTOR_SLEEP, defaultPWM_motor_map, false);
+                        REAR_RIGHT_MOTOR_SLEEP, defaultPWM_motor_map, false, true);
 Encoder rear_right_encoder(rad_per_tick);
 SpeedEstimator rear_right_speed_estimator(PID_UPDATE_mS);
 PID_SpeedController rear_right_speed_control(&rear_right_speed_estimator,
@@ -59,29 +59,29 @@ PID_SpeedController rear_right_speed_control(&rear_right_speed_estimator,
  *      - Actualizan el estimador de velocidad en base a la nueva posición
  */
 void read_front_left_encoder(void) {
-    front_left_encoder.updateCount(digitalRead(FRONT_LEFT_ENCODER_A),
-                                   digitalRead(FRONT_LEFT_ENCODER_B));
+    front_left_encoder.updateCount(digitalRead(FRONT_LEFT_ENCODER_B),   // Flipped
+                                   digitalRead(FRONT_LEFT_ENCODER_A));
     front_left_speed_estimator.updatePosition(
         front_left_encoder.getPosition(), front_left_encoder.getDirection());
 }
 
 void read_front_right_encoder(void) {
-    front_right_encoder.updateCount(digitalRead(FRONT_RIGHT_ENCODER_B),
-                                    digitalRead(FRONT_RIGHT_ENCODER_A));
+    front_right_encoder.updateCount(digitalRead(FRONT_RIGHT_ENCODER_A),
+                                    digitalRead(FRONT_RIGHT_ENCODER_B));
     front_right_speed_estimator.updatePosition(
         front_right_encoder.getPosition(), front_right_encoder.getDirection());
 }
 
 void read_rear_left_encoder(void) {
-    rear_left_encoder.updateCount(digitalRead(REAR_LEFT_ENCODER_A),
-                                  digitalRead(REAR_LEFT_ENCODER_B));
+    rear_left_encoder.updateCount(digitalRead(REAR_LEFT_ENCODER_B),     // Flipped
+                                  digitalRead(REAR_LEFT_ENCODER_A));
     rear_left_speed_estimator.updatePosition(rear_left_encoder.getPosition(),
                                              rear_left_encoder.getDirection());
 }
 
 void read_rear_right_encoder(void) {
-    rear_right_encoder.updateCount(digitalRead(REAR_RIGHT_ENCODER_B),
-                                   digitalRead(REAR_RIGHT_ENCODER_A));
+    rear_right_encoder.updateCount(digitalRead(REAR_RIGHT_ENCODER_A),
+                                   digitalRead(REAR_RIGHT_ENCODER_B));
     rear_right_speed_estimator.updatePosition(
         rear_right_encoder.getPosition(), rear_right_encoder.getDirection());
 }

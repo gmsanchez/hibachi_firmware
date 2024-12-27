@@ -53,4 +53,7 @@
 #define REAR_RIGHT_ENCODER_A  PB12
 #define REAR_RIGHT_ENCODER_B  PB13
 
+// Encoders ticks per rev
+#define TICKS_PER_REV 4480 / 4
+
 #endif  // !INCLUDE_BLUEPILL_PINOUT_H__
